@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BLOGS, getBlog, fmtDate } from "@/lib/blogs";
+import JsonLd from "@/components/JsonLd";
+import { blogPostingSchema, breadcrumb } from "@/lib/schema";
 
 export const dynamicParams = false;
 
@@ -16,8 +18,27 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const b = getBlog(slug);
-  if (!b) return { title: "Article — Mohammed Taufeeq Ahmed" };
-  return { title: `${b.title} — Mohammed Taufeeq Ahmed`, description: b.excerpt };
+  if (!b) return { title: "Article" };
+  const path = `/blog/${b.slug}`;
+  return {
+    title: b.title,
+    description: b.excerpt,
+    keywords: [...b.tags, b.category, "Mohammed Taufeeq Ahmed", "Taufeeq"],
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      title: b.title,
+      description: b.excerpt,
+      url: path,
+      siteName: "Mohammed Taufeeq Ahmed",
+      publishedTime: b.date,
+      modifiedTime: b.date,
+      authors: ["Mohammed Taufeeq Ahmed"],
+      section: b.category,
+      tags: b.tags,
+    },
+    twitter: { card: "summary_large_image", title: b.title, description: b.excerpt },
+  };
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
@@ -30,6 +51,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <main className="relative isolate mx-auto max-w-[760px] px-9 pb-28 pt-8 max-[860px]:px-5 max-[860px]:pb-20">
+      <JsonLd data={blogPostingSchema(blog)} />
+      <JsonLd
+        data={breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "Writing", path: "/blog" },
+          { name: blog.title, path: `/blog/${blog.slug}` },
+        ])}
+      />
       {/* ambient glow */}
       <div
         aria-hidden

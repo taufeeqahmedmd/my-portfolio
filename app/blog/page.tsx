@@ -4,8 +4,17 @@ import BlogCard from "@/components/BlogCard";
 import { BLOGS } from "@/lib/blogs";
 
 export const metadata: Metadata = {
-  title: "Writing — Mohammed Taufeeq Ahmed",
-  description: "Articles on Cloud, AWS, DevOps, and AI by Mohammed Taufeeq Ahmed.",
+  title: "Writing",
+  description:
+    "Articles on Cloud, AWS, DevOps, and AI by Mohammed Taufeeq Ahmed (Taufeeq / Md Taufeeq / Taufeeq Ahmed) — a Cloud & DevOps Engineer.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    title: "Writing — Mohammed Taufeeq Ahmed",
+    description: "Articles on Cloud, AWS, DevOps, and AI by Mohammed Taufeeq Ahmed.",
+    url: "/blog",
+    siteName: "Mohammed Taufeeq Ahmed",
+  },
 };
 
 export default function BlogIndex() {

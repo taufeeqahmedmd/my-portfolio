@@ -5,6 +5,8 @@ import TechMarquee from "@/components/TechMarquee";
 import NavCard from "@/components/NavCard";
 import GithubActivity from "@/components/GithubActivity";
 import Dock from "@/components/Dock";
+import JsonLd from "@/components/JsonLd";
+import { profilePageSchema } from "@/lib/schema";
 
 const card =
   "rounded-[22px] border border-white/[0.07] bg-[rgba(16,17,18,0.62)] p-[26px] backdrop-blur-[14px] shadow-[0_24px_60px_rgba(0,0,0,0.45)]";
@@ -34,6 +36,7 @@ const TECH = [
 export default function Home() {
   return (
     <>
+    <JsonLd data={profilePageSchema()} />
     <main className="relative mx-auto max-w-[1180px] overflow-hidden px-9 pb-14 pt-12 max-[860px]:px-5 max-[860px]:pb-10 max-[860px]:pt-8">
       <RevealInit />
 

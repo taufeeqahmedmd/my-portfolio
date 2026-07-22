@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ALL_PROJECTS, getProject, techLogo } from "@/lib/projects";
+import JsonLd from "@/components/JsonLd";
+import { projectSchema, breadcrumb } from "@/lib/schema";
 
 export const dynamicParams = false;
 
@@ -17,10 +19,21 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const p = getProject(slug);
-  if (!p) return { title: "Project — Mohammed Taufeeq Ahmed" };
+  if (!p) return { title: "Project" };
+  const path = `/projects/${p.slug}`;
   return {
-    title: `${p.title} — Mohammed Taufeeq Ahmed`,
+    title: p.title,
     description: p.summary,
+    keywords: [...p.tech, ...(p.infra ?? []), p.category, "Mohammed Taufeeq Ahmed", "Taufeeq"],
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      title: p.title,
+      description: p.summary,
+      url: path,
+      siteName: "Mohammed Taufeeq Ahmed",
+    },
+    twitter: { card: "summary_large_image", title: p.title, description: p.summary },
   };
 }
 
@@ -71,6 +84,14 @@ export default async function ProjectPage({
 
   return (
     <main className="relative isolate mx-auto max-w-[1120px] px-9 pb-24 pt-8 max-[860px]:px-5 max-[860px]:pb-16">
+      <JsonLd data={projectSchema(project)} />
+      <JsonLd
+        data={breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "Projects", path: "/#resume" },
+          { name: project.title, path: `/projects/${project.slug}` },
+        ])}
+      />
       {/* ambient accent glow */}
       <div
         aria-hidden
