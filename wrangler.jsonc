@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-portfolio",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-07-22",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Self-reference MUST match "name" above — a service binding to a different
+  // worker name is what broke the previous deploy (referenced "portfolio").
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "my-portfolio"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

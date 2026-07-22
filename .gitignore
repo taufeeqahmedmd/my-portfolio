@@ -11,3 +11,10 @@ next-env.d.ts
 .claude/
 .vscode/
 .idea/
+
+# cloudflare / opennext (generated)
+.open-next/
+.wrangler/
+.dev.vars
+.dev.vars.*
+cloudflare-env.d.ts
