@@ -94,7 +94,7 @@ export default function Home() {
             B.Tech, Computer Science Engineering
           </p>
           <p className="mt-1.5 text-[13.5px] leading-[1.5] text-muted">
-            Anurag College of Engineering (Anurag University), India
+            Anurag College of Engineering (Jawaharlal Nehru Technological University, Hyderabad), India
           </p>
           <p className="mt-1.5 text-[12px] text-faint">2017 – 2021</p>
         </section>

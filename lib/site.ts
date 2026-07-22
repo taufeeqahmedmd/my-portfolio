@@ -56,7 +56,7 @@ export const PERSON = {
   familyName: "Ahmed",
   jobTitle: "Cloud & DevOps Engineer",
   worksFor: "K-Innovative Hub Pvt. Ltd.",
-  alumniOf: "Anurag University (Anurag College of Engineering)",
+  alumniOf: "Jawaharlal Nehru Technological University, Hyderabad (Anurag College of Engineering)",
   image: absoluteUrl("/portrait.png"),
   email: "mailto:mdtaufeeqahmed15@gmail.com",
   address: {
