@@ -2,12 +2,11 @@
  * Central site + person metadata. Everything SEO-related (metadata, JSON-LD,
  * sitemap, robots) reads from here so there is a single source of truth.
  *
- * ⚠️  SET YOUR REAL DOMAIN: either define NEXT_PUBLIC_SITE_URL in your build
- * environment (Cloudflare → Worker → Settings → Variables) or change the
- * fallback below. Using the wrong domain produces bad canonical URLs.
+ * The production domain. Override per-environment with NEXT_PUBLIC_SITE_URL
+ * (a build-time variable) if needed; otherwise the canonical domain below wins.
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mohammedtaufeeqahmed.com"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://iamtaufeeq.cloud"
 ).replace(/\/+$/, "");
 
 /** Absolute URL helper for canonical / OG / sitemap links. */
