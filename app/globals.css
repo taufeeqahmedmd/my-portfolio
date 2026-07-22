@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #f4f5f6;
+  --color-muted: #a2a4a8;
+  --color-faint: #6f7174;
+  --color-accent: #94f23c;
+
+  --font-display: var(--font-montserrat);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --accent: #94f23c;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Prevent iOS Safari from auto-inflating text on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Never allow a stray element to create horizontal scroll on small screens.
+   `clip` (not `hidden`) avoids turning the body into a scroll container, so
+   `position: sticky` on descendants keeps working. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  color: var(--color-ink);
+  background: radial-gradient(120% 90% at 50% 0%, #44464b 0%, #34363a 38%, #1c1d1f 100%);
+  background-attachment: fixed;
+  background-color: #1c1d1f; /* fallback so the page never flashes white */
+  min-height: 100vh;
+  min-height: 100dvh; /* account for mobile browser chrome */
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  /* Remove the grey tap flash on iOS/Android when tapping links & buttons */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* `background-attachment: fixed` is unreliable / janky on mobile Safari.
+   Fall back to a normal scroll attachment on phones. */
+@media (max-width: 860px) {
+  body {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+/* Portrait subtle ground fade */
+.portrait-mask {
+  -webkit-mask-image: linear-gradient(to bottom, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 94%, transparent 100%);
+}
+
+/* Rotating skills ring */
+.role-ring {
+  width: 100%;
+  height: 100%;
+  animation: spin 26s linear infinite;
+}
+.ring-text {
+  fill: var(--color-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+}
+.ring-text-lg {
+  fill: #c2c4c7;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+}
+.ring-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--accent);
+  filter: drop-shadow(0 0 14px rgba(148, 242, 60, 0.4));
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tech marquee (auto-scroll) */
+.tech-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+.tech-marquee-track {
+  display: flex;
+  gap: 8px;
+  width: max-content;
+  animation: marquee-x var(--marquee-dur, 32s) linear infinite;
+}
+.tech-marquee-track.is-reverse {
+  animation-direction: reverse;
+}
+.tech-marquee-track.is-paused {
+  animation-play-state: paused;
+}
+@keyframes marquee-x {
+  to {
+    /* -50% (two copies) minus half the 8px gap = seamless loop */
+    transform: translateX(calc(-50% - 4px));
+  }
+}
+
+/* Themed thin scrollbar */
+.themed-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 242, 60, 0.35) transparent;
+}
+.themed-scroll::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+.themed-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+.themed-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 242, 60, 0.3);
+  border-radius: 999px;
+}
+.themed-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 242, 60, 0.55);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-ring {
+    animation: none;
+  }
+  .tech-marquee-track {
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
