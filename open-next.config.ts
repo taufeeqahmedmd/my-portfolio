@@ -1,9 +1,13 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
+import staticAssetsIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache";
 
-// Default Cloudflare config. This static/SSG portfolio needs no incremental
-// cache, tag cache, or queue — add them here later if ISR/on-demand
-// revalidation is introduced. See https://opennext.js.org/cloudflare/caching
-const config = defineCloudflareConfig();
+// This site is fully static/SSG (all `/blog/[slug]` and `/projects/[slug]`
+// pages are prerendered at build time; nothing revalidates at runtime).
+// Serve those prerendered pages from Workers static assets — without an
+// incremental cache the worker can't read them and every dynamic route 404s.
+const config = defineCloudflareConfig({
+  incrementalCache: staticAssetsIncrementalCache,
+});
 
 // Run the plain Next.js build via a dedicated script. Without this, OpenNext
 // defaults to `npm run build` — and since the "build" script IS
