@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Inter } from "next/font/google";
+import { Montserrat, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
+import Preloader from "@/components/Preloader";
 import { siteGraph } from "@/lib/schema";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, SITE_KEYWORDS } from "@/lib/site";
 
@@ -16,6 +17,13 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
@@ -82,8 +90,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${inter.variable}`}>
+      <body
+        className={`${montserrat.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      >
         <JsonLd data={siteGraph()} />
+        {/* If JS is disabled the overlay can never animate away — hide it. */}
+        <noscript>
+          <style>{`.preloader{display:none!important}`}</style>
+        </noscript>
+        <Preloader />
         {children}
       </body>
     </html>
