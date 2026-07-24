@@ -8,6 +8,7 @@
 
   --font-display: var(--font-montserrat);
   --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 :root {
@@ -168,6 +169,34 @@ body {
   transform: none;
 }
 
+/* ── Deploy preloader ───────────────────────────────────────── */
+.preloader {
+  background:
+    radial-gradient(120% 90% at 50% 0%, #26282c 0%, #1c1d1f 55%, #171819 100%);
+  transition: opacity 0.55s ease, visibility 0.55s ease;
+}
+.preloader.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+/* Blinking terminal caret */
+@keyframes caret-blink {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0; }
+}
+.preloader-caret {
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+/* Pulsing ring on the active stage node */
+@keyframes node-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(148, 242, 60, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(148, 242, 60, 0); }
+}
+.preloader-node-active {
+  animation: node-pulse 1.5s ease-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .role-ring {
     animation: none;
@@ -178,5 +207,9 @@ body {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+  .preloader-caret,
+  .preloader-node-active {
+    animation: none;
   }
 }
