@@ -1,5 +1,5 @@
 /** Native SVG diagrams a section can render — see components/BlogDiagram.tsx. */
-export type BlogDiagram = "dns-resolution" | "dns-caching" | "dns-trace";
+export type BlogDiagram = "dns-resolution" | "dns-caching" | "dns-trace" | "dns-flow";
 
 export type Blog = {
   slug: string;
@@ -36,6 +36,7 @@ export const BLOGS: Blog[] = [
       },
       {
         heading: "The four servers in a single lookup",
+        diagram: "dns-resolution",
         body: [
           "A cold DNS lookup touches up to four kinds of server. First is the DNS recursor (the recursive resolver) — the server your browser or OS talks to directly. Its job is to do all the legwork and return a final answer. If it has the record cached, it replies instantly; if not, it walks the hierarchy on your behalf. Common examples are your ISP's resolver and public ones like Google DNS (8.8.8.8) and Cloudflare (1.1.1.1).",
           "Second is the root nameserver — the top of the tree. It doesn't know individual domain IPs; it points the resolver to the right Top-Level Domain (TLD) server based on the extension (.com, .org, .net). Third is the TLD nameserver, which manages every domain under one extension and returns the NS records telling the resolver which authoritative server owns the domain.",
@@ -59,7 +60,7 @@ export const BLOGS: Blog[] = [
       },
       {
         heading: "Walking a full lookup, step by step",
-        diagram: "dns-resolution",
+        diagram: "dns-flow",
         body: [
           "When you enter a domain, the resolver is the first component involved — the interface between your client and the wider DNS infrastructure. On an uncached lookup it mixes recursive and iterative queries: it asks a root server, gets a referral to the TLD, asks the TLD, gets a referral to the authoritative nameserver, and finally asks the authoritative server for the record.",
           "It's worth separating two similar terms. A recursive query is the request the client sends asking for a complete answer. A recursive resolver is the server that accepts that request and does all the lookups on the client's behalf. Once the resolver has the IP, it returns it and caches it according to the TTL to speed up future requests.",

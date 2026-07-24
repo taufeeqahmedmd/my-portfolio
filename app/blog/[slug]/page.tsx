@@ -51,7 +51,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const next = BLOGS[(idx + 1) % BLOGS.length];
 
   return (
-    <main className="relative isolate mx-auto max-w-[760px] px-9 pb-28 pt-8 max-[860px]:px-5 max-[860px]:pb-20">
+    <main className="relative isolate mx-auto max-w-[1080px] px-9 pb-28 pt-8 max-[860px]:px-5 max-[860px]:pb-20">
       <JsonLd data={blogPostingSchema(blog)} />
       <JsonLd
         data={breadcrumb([
