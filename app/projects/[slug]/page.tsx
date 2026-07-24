@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ALL_PROJECTS, getProject, techLogo } from "@/lib/projects";
 import JsonLd from "@/components/JsonLd";
+import ArchitectureDiagram from "@/components/ArchitectureDiagram";
 import { projectSchema, breadcrumb } from "@/lib/schema";
 
 export const dynamicParams = false;
@@ -160,7 +161,7 @@ export default async function ProjectPage({
       <div className="mt-14 grid grid-cols-[300px_1fr] gap-10 max-[960px]:grid-cols-1 max-[960px]:gap-8 max-[860px]:mt-11">
         {/* sticky details rail */}
         <aside>
-          <div className="sticky top-8 flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             <div className={`${cardBase} p-6`}>
               <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-faint">Details</p>
               <dl className="mt-4 flex flex-col divide-y divide-white/[0.06]">
@@ -200,6 +201,44 @@ export default async function ProjectPage({
                 </>
               )}
             </div>
+
+            {project.architecture && (
+              <div className={`${cardBase} p-6`}>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-accent">
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.9"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
+                      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+                      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+                    </svg>
+                  </span>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-faint">
+                    System Architecture
+                  </p>
+                </div>
+                <div className="mt-6">
+                  <ArchitectureDiagram
+                    tiers={project.architecture.tiers.map((t) => ({
+                      label: t.label,
+                      nodes: t.nodes.map((n) => ({
+                        name: n.name,
+                        detail: n.detail,
+                        logo: n.tech ? techLogo(n.tech) : undefined,
+                      })),
+                    }))}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </aside>
 
