@@ -17,6 +17,13 @@ export type Project = {
   stack?: { label: string; value: string }[];
   /** optional grouped detail sections; when present, replaces the single Highlights list */
   sections?: { title: string; items: string[] }[];
+  /** optional layered system-architecture diagram, rendered top → bottom as a hierarchy */
+  architecture?: {
+    tiers: {
+      label: string;
+      nodes: { name: string; detail?: string; tech?: string }[];
+    }[];
+  };
 };
 
 /* Shared hosting/infrastructure — every deployed web app runs on AWS EC2 (Linux),
@@ -43,6 +50,28 @@ const GROUP_A: Project[] = [
       "Built GitHub-based CI/CD workflows for automated, standardized, and repeatable production releases.",
       "Set up IAM users, roles, and access policies, and monitored application health and logs through CloudWatch.",
     ],
+    architecture: {
+      tiers: [
+        { label: "Client", nodes: [{ name: "Enterprise Users", detail: "HTTPS" }] },
+        {
+          label: "Edge",
+          nodes: [
+            { name: "Route 53", detail: "DNS", tech: "route 53" },
+            { name: "Nginx", detail: "Reverse proxy · SSL/TLS", tech: "nginx" },
+          ],
+        },
+        { label: "Application", nodes: [{ name: "Next.js ERP", tech: "next.js" }] },
+        { label: "Infrastructure", nodes: [{ name: "AWS EC2", detail: "Linux", tech: "aws ec2" }] },
+        {
+          label: "Operations",
+          nodes: [
+            { name: "IAM", detail: "Access control", tech: "iam" },
+            { name: "CloudWatch", detail: "Monitoring", tech: "cloudwatch" },
+            { name: "GitHub CI/CD", detail: "Releases", tech: "github" },
+          ],
+        },
+      ],
+    },
   },
   {
     slug: "work-report-application",
@@ -66,6 +95,39 @@ const GROUP_A: Project[] = [
       { label: "Real-time", value: "Server-Sent Events (SSE) for live notifications" },
       { label: "Packaging", value: "Docker (two-stage Node 20 Alpine standalone) behind Nginx" },
     ],
+    architecture: {
+      tiers: [
+        {
+          label: "Client",
+          nodes: [
+            { name: "Installable PWA", detail: "React 19", tech: "react" },
+            { name: "Web Push", detail: "VAPID" },
+          ],
+        },
+        { label: "Edge", nodes: [{ name: "Nginx", detail: "TLS · SSE pass-through · rate limit", tech: "nginx" }] },
+        {
+          label: "Application",
+          nodes: [
+            { name: "Next.js 16 standalone", detail: "UI + API in one process", tech: "next.js" },
+            { name: "SSE", detail: "Live notifications" },
+          ],
+        },
+        {
+          label: "Data",
+          nodes: [
+            { name: "PostgreSQL", detail: "Row-Level Security", tech: "postgresql" },
+            { name: "Drizzle ORM", detail: "Boot migrations" },
+          ],
+        },
+        {
+          label: "Infrastructure",
+          nodes: [
+            { name: "Docker", detail: "Node 20 Alpine", tech: "docker" },
+            { name: "pg_dump backups", detail: "Nightly · 30-day" },
+          ],
+        },
+      ],
+    },
     sections: [
       {
         title: "Key Features",
@@ -147,6 +209,27 @@ const GROUP_A: Project[] = [
       { label: "Packaging", value: "Dockerized services for consistent local and deploy environments" },
       { label: "Status", value: "In progress — learning track and build advancing together" },
     ],
+    architecture: {
+      tiers: [
+        { label: "Client", nodes: [{ name: "Next.js · React", detail: "TypeScript · Tailwind", tech: "next.js" }] },
+        {
+          label: "Application",
+          nodes: [
+            { name: "Node.js API", detail: "Portal / ATS logic", tech: "node.js" },
+            { name: "FastAPI", detail: "Python inference service", tech: "python" },
+          ],
+        },
+        {
+          label: "AI Layer",
+          nodes: [
+            { name: "Hugging Face", detail: "LLM & embedding models" },
+            { name: "LangChain", detail: "RAG · agents" },
+          ],
+        },
+        { label: "Data", nodes: [{ name: "PostgreSQL + pgvector", detail: "Embeddings · semantic search", tech: "postgresql" }] },
+        { label: "Infrastructure", nodes: [{ name: "Docker", detail: "Containerized services", tech: "docker" }] },
+      ],
+    },
     sections: [
       {
         title: "Learning Track",
@@ -220,6 +303,14 @@ const GROUP_B: Project[] = [
       { label: "Access model", value: "Open browsing · sign-in required to download · free vs. paid tiers" },
       { label: "Payments", value: "Razorpay checkout for paid models" },
     ],
+    architecture: {
+      tiers: [
+        { label: "Client", nodes: [{ name: "React SPA", detail: "Tailwind CSS", tech: "react" }] },
+        { label: "Application", nodes: [{ name: "Node.js API", detail: "Server-side access control", tech: "node.js" }] },
+        { label: "Payments", nodes: [{ name: "Razorpay", detail: "Checkout for paid models" }] },
+        { label: "Data", nodes: [{ name: "PostgreSQL", detail: "Users · catalog · orders", tech: "postgresql" }] },
+      ],
+    },
     sections: [
       {
         title: "Key Features",
@@ -277,6 +368,15 @@ const GROUP_B: Project[] = [
       { label: "Speech", value: "Google Text-to-Speech (gTTS) with a pyttsx3 offline fallback engine" },
       { label: "Stack", value: "Python 3.6 · NumPy · OpenCV — runs on any Windows laptop with a webcam" },
     ],
+    architecture: {
+      tiers: [
+        { label: "Input", nodes: [{ name: "Webcam", detail: "Live video stream" }] },
+        { label: "Capture", nodes: [{ name: "OpenCV", detail: "Frame-by-frame read", tech: "python" }] },
+        { label: "Detection", nodes: [{ name: "YOLOv2", detail: "COCO 80-class · DNN module" }] },
+        { label: "Tracking", nodes: [{ name: "Motion inference", detail: "Bounding-box deque · left / right" }] },
+        { label: "Output", nodes: [{ name: "gTTS / pyttsx3", detail: "Spoken alerts" }] },
+      ],
+    },
     sections: [
       {
         title: "Key Features",
@@ -323,6 +423,15 @@ const GROUP_B: Project[] = [
       "Image pre-processing with OpenCV to boost recognition accuracy.",
       "Deep-learning techniques for document understanding.",
     ],
+    architecture: {
+      tiers: [
+        { label: "Input", nodes: [{ name: "Document Image", detail: "Scan / photo" }] },
+        { label: "Pre-processing", nodes: [{ name: "OpenCV", detail: "Enhance · denoise · deskew" }] },
+        { label: "Recognition", nodes: [{ name: "Tesseract OCR", detail: "Text extraction" }] },
+        { label: "Understanding", nodes: [{ name: "Deep-learning models", detail: "Structure & fields" }] },
+        { label: "Output", nodes: [{ name: "Structured Text", detail: "Machine-readable" }] },
+      ],
+    },
   },
   {
     slug: "transport-route-optimization",
@@ -347,6 +456,45 @@ const GROUP_B: Project[] = [
       { label: "Background work", value: "BullMQ 5 — sync-events, notifications, route-optimize, and reports queues" },
       { label: "Scale / Targets", value: "200,000+ students · 99.9% availability · 0.6 ms card-lookup p50 at 200k rows" },
     ],
+    architecture: {
+      tiers: [
+        {
+          label: "Client",
+          nodes: [
+            { name: "Next.js 15 PWA", detail: "Tap · QR · dashboard", tech: "next.js" },
+            { name: "Dexie / IndexedDB", detail: "Offline roster + tap queue" },
+          ],
+        },
+        {
+          label: "Sync / Realtime",
+          nodes: [
+            { name: "Background Sync", detail: "Idempotent flush" },
+            { name: "SSE", detail: "Live counters" },
+          ],
+        },
+        {
+          label: "Application",
+          nodes: [
+            { name: "Express API", detail: "/api/v1 · TypeScript · Zod", tech: "typescript" },
+            { name: "BullMQ workers", detail: "Sync · optimize · reports" },
+          ],
+        },
+        {
+          label: "Data",
+          nodes: [
+            { name: "PostgreSQL 16 + PostGIS", detail: "Partitioned event tables", tech: "postgresql" },
+            { name: "Redis 7", detail: "Cache · Pub/Sub · queues" },
+          ],
+        },
+        {
+          label: "Infrastructure",
+          nodes: [
+            { name: "Docker", detail: "Containerized", tech: "docker" },
+            { name: "AWS", detail: "ECS · RDS · ElastiCache" },
+          ],
+        },
+      ],
+    },
     sections: [
       {
         title: "Key Features",
@@ -424,6 +572,28 @@ const GROUP_B: Project[] = [
       { label: "Notifications", value: "Email (SMTP) · Web Push (VAPID) · WhatsApp" },
       { label: "Deployment", value: "EC2 · systemd · Nginx (TLS) · nightly pg_dump backups" },
     ],
+    architecture: {
+      tiers: [
+        {
+          label: "Client",
+          nodes: [
+            { name: "Next.js 16 PWA", detail: "Offline-first POS", tech: "next.js" },
+            { name: "IndexedDB", detail: "Tap queue" },
+          ],
+        },
+        { label: "Edge", nodes: [{ name: "Nginx", detail: "TLS · Let's Encrypt", tech: "nginx" }] },
+        {
+          label: "Application",
+          nodes: [
+            { name: "Next.js", detail: "Route Handlers + Server Actions", tech: "next.js" },
+            { name: "Auth.js v5", detail: "Deny-by-default RBAC" },
+          ],
+        },
+        { label: "Payments", nodes: [{ name: "Gateway + reconcile", detail: "Self-healing top-ups" }] },
+        { label: "Data", nodes: [{ name: "PostgreSQL 16", detail: "Prisma · localhost-only", tech: "postgresql" }] },
+        { label: "Infrastructure", nodes: [{ name: "AWS EC2", detail: "systemd · Dockerized Postgres", tech: "aws ec2" }] },
+      ],
+    },
     sections: [
       {
         title: "Key Features",

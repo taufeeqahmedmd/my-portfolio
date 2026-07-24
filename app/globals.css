@@ -197,6 +197,164 @@ body {
   animation: node-pulse 1.5s ease-out infinite;
 }
 
+/* ── System architecture — minimal hierarchy thread ──────────── */
+.atree {
+  width: 100%;
+  max-width: 520px;
+}
+.atree-tier {
+  display: flex;
+  gap: 13px;
+}
+.atree-rail {
+  position: relative;
+  width: 30px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+.atree-dot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 242, 60, 0.4);
+  background: #1c1d1f;
+  box-shadow: 0 0 0 4px rgba(148, 242, 60, 0.05);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0;
+  transform: scale(0.55);
+  transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: var(--d, 0ms);
+}
+.atree.is-in .atree-dot {
+  opacity: 1;
+  transform: none;
+}
+.atree-line {
+  position: absolute;
+  top: 29px;
+  bottom: -2px;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(148, 242, 60, 0.38), rgba(148, 242, 60, 0.1));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.55s ease;
+  transition-delay: var(--d, 0ms);
+}
+.atree.is-in .atree-line {
+  transform: scaleY(1);
+}
+.atree-pulse {
+  position: absolute;
+  left: 0;
+  top: -18px;
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(180deg, transparent, var(--accent), transparent);
+  opacity: 0;
+}
+.atree.is-in .atree-pulse {
+  animation: atree-flow 2s linear infinite;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes atree-flow {
+  0% {
+    top: -18px;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+.atree-content {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 26px;
+}
+.atree-tier:last-child .atree-content {
+  padding-bottom: 0;
+}
+.atree-label {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: var(--d, 0ms);
+}
+.atree.is-in .atree-label {
+  opacity: 1;
+  transform: none;
+}
+.atree-nodes {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.atree-node {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 9px;
+  opacity: 0;
+  transform: translateX(9px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  transition-delay: var(--d, 0ms);
+}
+.atree.is-in .atree-node {
+  opacity: 1;
+  transform: none;
+}
+.atree-node-logo {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.atree-node-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  transition: color 0.2s ease;
+}
+.atree-node:hover .atree-node-name {
+  color: var(--accent);
+}
+.atree-node-detail {
+  font-size: 12px;
+  color: var(--color-faint);
+}
+.atree-node-detail::before {
+  content: "·";
+  margin-right: 7px;
+  opacity: 0.6;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .role-ring {
     animation: none;
@@ -210,6 +368,20 @@ body {
   }
   .preloader-caret,
   .preloader-node-active {
+    animation: none;
+  }
+  .atree-dot,
+  .atree-label,
+  .atree-node {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .atree-line {
+    transform: scaleY(1);
+    transition: none;
+  }
+  .atree-pulse {
     animation: none;
   }
 }
