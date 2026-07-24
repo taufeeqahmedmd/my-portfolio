@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BLOGS, getBlog, fmtDate } from "@/lib/blogs";
 import JsonLd from "@/components/JsonLd";
+import BlogDiagram from "@/components/BlogDiagram";
 import { blogPostingSchema, breadcrumb } from "@/lib/schema";
 
 export const dynamicParams = false;
@@ -119,6 +120,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 </p>
               ))}
             </div>
+            {s.diagram && <BlogDiagram kind={s.diagram} />}
           </section>
         ))}
       </article>
